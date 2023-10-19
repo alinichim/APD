@@ -8,21 +8,23 @@ int **a;
 int **b;
 int **c;
 
-// TODO: paralelizati operatia din comentariul din functie
-// in interiorul functiei respective
 void *thread_function(void *arg)
 {
 	int thread_id = *(int *)arg;
 
-	/*
+    int slice = N / P;
+    int start = thread_id * slice;
+    int end = start + slice;
+
+    int i, j, k;
+
 	for (i = 0; i < N; i++) {
-		for (j = 0; j < N; j++) {
+		for (j = start; j < end; j++) {
 			for (k = 0; k < N; k++) {
 				c[i][j] += a[i][k] * b[k][j];
 			}
 		}
 	}
-	*/
 
 	pthread_exit(NULL);
 }

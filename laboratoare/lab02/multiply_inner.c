@@ -8,21 +8,27 @@ int **a;
 int **b;
 int **c;
 
-// TODO: paralelizati operatia din comentariul din functie
-// in interiorul functiei respective
+pthread_mutex_t mutex;
+
 void *thread_function(void *arg)
 {
 	int thread_id = *(int *)arg;
 
-	/*
+    int slice = N / P;
+    int start = thread_id * slice;
+    int end = start + slice;
+
+    int i, j, k;
+
 	for (i = 0; i < N; i++) {
 		for (j = 0; j < N; j++) {
-			for (k = 0; k < N; k++) {
+			for (k = start; k < end; k++) {
+                pthread_mutex_lock(&mutex);
 				c[i][j] += a[i][k] * b[k][j];
+                pthread_mutex_unlock(&mutex);
 			}
 		}
 	}
-	*/
 
 	pthread_exit(NULL);
 }
@@ -97,6 +103,8 @@ int main(int argc, char *argv[])
 
 	pthread_t tid[P];
 	int thread_id[P];
+
+    pthread_mutex_init(&mutex, NULL);
 
 	for (i = 0; i < P; i++) {
 		thread_id[i] = i;
